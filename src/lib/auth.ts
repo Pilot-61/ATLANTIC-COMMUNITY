@@ -46,16 +46,6 @@ export type UpdateProfileData = z.infer<typeof updateProfileSchema>;
 
 // Auth functions
 export const signUp = async (data: SignUpData) => {
-  // Check if username already exists
-  const { data: existingProfile } = await supabase
-    .from('profiles')
-    .select('username')
-    .eq('username', data.username)
-    .single();
-
-  if (existingProfile) {
-    throw new Error('Username already exists');
-  }
 
   // Sign up user
   const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -63,9 +53,14 @@ export const signUp = async (data: SignUpData) => {
     password: data.password,
   });
 
+  console.log('authData after signUp:', authData);
   if (authError) throw authError;
 
   if (authData.user) {
+    // Check session
+    const session = authData.session;
+    console.log('Session after signUp:', session);
+
     // Create profile
     const { error: profileError } = await supabase
       .from('profiles')
@@ -75,7 +70,12 @@ export const signUp = async (data: SignUpData) => {
         display_name: data.displayName,
       });
 
-    if (profileError) throw profileError;
+    if (profileError) {
+      console.error('Profile insert error:', profileError);
+      throw profileError;
+    }
+  } else {
+    console.error('No user returned from signUp');
   }
 
   return authData;
@@ -152,7 +152,7 @@ export const uploadAvatar = async (file: File) => {
 
   const fileExt = file.name.split('.').pop();
   const fileName = `${user.id}-${Math.random()}.${fileExt}`;
-  const filePath = `avatars/${fileName}`;
+  const filePath = fileName;
 
   const { error: uploadError } = await supabase.storage
     .from('avatars')

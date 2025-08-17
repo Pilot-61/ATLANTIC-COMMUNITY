@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Reply, Edit, Trash2, MoreHorizontal } from 'lucide-react';
+import { Send, Reply, Edit, Trash2, MoreHorizontal, MessageCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { type AnnouncementComment } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';

@@ -3,6 +3,7 @@ import { X, Image, Pin, Save } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { createAnnouncement, updateAnnouncement } from '../../lib/announcements';
+import { uploadAnnouncementImage } from '../../lib/announcementImages';
 import { type Announcement } from '../../lib/supabase';
 
 interface CreateAnnouncementModalProps {
@@ -17,6 +18,7 @@ interface AnnouncementFormData {
   content: string;
   image_url?: string;
   is_pinned: boolean;
+  image_file?: FileList;
 }
 
 const CreateAnnouncementModal: React.FC<CreateAnnouncementModalProps> = ({
@@ -49,13 +51,17 @@ const CreateAnnouncementModal: React.FC<CreateAnnouncementModalProps> = ({
   const onSubmit = async (data: AnnouncementFormData) => {
     setLoading(true);
     try {
+      let imageUrl = data.image_url || undefined;
+      if (data.image_file && data.image_file.length > 0) {
+        const file = data.image_file[0];
+        imageUrl = await uploadAnnouncementImage(file);
+      }
       const announcementData = {
         title: data.title,
         content: data.content,
-        image_url: data.image_url || undefined,
+        image_url: imageUrl,
         is_pinned: data.is_pinned,
       };
-
       if (editingAnnouncement) {
         await updateAnnouncement(editingAnnouncement.id, announcementData);
         toast.success('Announcement updated successfully!');
@@ -63,7 +69,6 @@ const CreateAnnouncementModal: React.FC<CreateAnnouncementModalProps> = ({
         await createAnnouncement(announcementData);
         toast.success('Announcement created successfully!');
       }
-
       onSuccess();
       onClose();
       reset();
@@ -124,16 +129,25 @@ const CreateAnnouncementModal: React.FC<CreateAnnouncementModalProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              Image URL (Optional)
+              Announcement Image (Optional)
             </label>
-            <div className="relative">
-              <Image className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <div className="flex flex-col gap-2">
               <input
-                {...register('image_url')}
-                type="url"
-                className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-red-500 focus:outline-none text-white"
-                placeholder="https://example.com/image.jpg"
+                type="file"
+                accept="image/*"
+                {...register('image_file')}
+                className="w-full text-gray-300"
               />
+              <div className="relative">
+                <Image className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  {...register('image_url')}
+                  type="url"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:border-red-500 focus:outline-none text-white"
+                  placeholder="https://example.com/image.jpg"
+                />
+              </div>
+              <span className="text-xs text-gray-500">You can upload an image or provide a direct image URL.</span>
             </div>
           </div>
 
