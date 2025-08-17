@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share2, Pin, MoreHorizontal, Edit, Trash2, Eye } from 'lucide-react';
+import { Heart, MessageCircle, Pin, MoreHorizontal, Edit, Trash2, Eye } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { type Announcement } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
-import { toggleReaction, shareAnnouncement, deleteAnnouncement } from '../../lib/announcements';
+import { toggleReaction, deleteAnnouncement } from '../../lib/announcements';
 import toast from 'react-hot-toast';
 import CommentSection from './CommentSection';
 
@@ -20,7 +20,7 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, onUpd
   const [loading, setLoading] = useState(false);
 
   const userReaction = announcement.reactions?.find(r => r.user?.id === profile?.id);
-  const userShared = announcement.shares?.some(s => s.user?.id === profile?.id);
+
 
   const handleReaction = async () => {
     if (!profile) {
@@ -40,23 +40,7 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, onUpd
     }
   };
 
-  const handleShare = async () => {
-    if (!profile) {
-      toast.error('Please sign in to share');
-      return;
-    }
 
-    setLoading(true);
-    try {
-      await shareAnnouncement(announcement.id);
-      onUpdate();
-      toast.success(userShared ? 'Share removed' : 'Announcement shared');
-    } catch (error) {
-      toast.error('Failed to share announcement');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this announcement?')) return;
@@ -191,18 +175,7 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, onUpd
               <span className="text-sm font-medium">{announcement._count?.comments || 0}</span>
             </button>
 
-            <button
-              onClick={handleShare}
-              disabled={loading || !profile}
-              className={`flex items-center space-x-2 transition-colors ${
-                userShared
-                  ? 'text-green-500 hover:text-green-400'
-                  : 'text-gray-400 hover:text-green-500'
-              } disabled:opacity-50`}
-            >
-              <Share2 className="w-5 h-5" />
-              <span className="text-sm font-medium">{announcement._count?.shares || 0}</span>
-            </button>
+
           </div>
 
           <div className="flex items-center space-x-2 text-gray-400 text-sm">
