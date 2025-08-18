@@ -21,6 +21,8 @@ interface NavigationProps {
   scrollY: number;
   currentPage: string;
   setCurrentPage: (page: string) => void;
+  showProfileModal: boolean;
+  setShowProfileModal: (open: boolean) => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({
@@ -29,10 +31,12 @@ const Navigation: React.FC<NavigationProps> = ({
   scrollY,
   currentPage,
   setCurrentPage,
+  showProfileModal,
+  setShowProfileModal,
 }) => {
   const { user, profile } = useAuth();
   const [showAuthModal, setShowAuthModal] = React.useState(false);
-  const [showProfileModal, setShowProfileModal] = React.useState(false);
+  // showProfileModal and setShowProfileModal are now props
   const [showUserMenu, setShowUserMenu] = React.useState(false);
 
   const handleSignOut = async () => {
@@ -166,10 +170,7 @@ const Navigation: React.FC<NavigationProps> = ({
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />
-      <ProfileModal
-        isOpen={showProfileModal}
-        onClose={() => setShowProfileModal(false)}
-      />
+  {/* ProfileModal is now rendered at the app level */}
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-black/95 backdrop-blur-md border-t border-red-500/20 shadow-lg">

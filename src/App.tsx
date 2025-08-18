@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Navigation from './components/Navigation';
+import ProfileModal from './components/profile/ProfileModal';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import Rules from './components/Rules';
@@ -16,6 +17,7 @@ const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [currentPage, setCurrentPage] = useState('home');
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -45,8 +47,8 @@ const App: React.FC = () => {
 
   // Render the correct page
   let PageComponent = null;
-  if (currentPage === 'login') PageComponent = <LoginPage />;
-  else if (currentPage === 'register') PageComponent = <RegisterPage />;
+  if (currentPage === 'login') PageComponent = <LoginPage setCurrentPage={setCurrentPage} />;
+  else if (currentPage === 'register') PageComponent = <RegisterPage setCurrentPage={setCurrentPage} />;
   else if (currentPage === 'home') PageComponent = <Hero setCurrentPage={setCurrentPage} />;
   else if (currentPage === 'features') PageComponent = <Features setCurrentPage={setCurrentPage} />;
   else if (currentPage === 'rules') PageComponent = <Rules />;
@@ -84,7 +86,13 @@ const App: React.FC = () => {
           scrollY={scrollY}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          showProfileModal={showProfileModal}
+          setShowProfileModal={setShowProfileModal}
         />
+      <ProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+      />
         <div className="transition-all duration-300">
           {PageComponent}
         </div>
