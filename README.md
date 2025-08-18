@@ -20,8 +20,8 @@ ATC is a modern community management platform inspired by TXAdmin, built with Re
 ## Getting Started
 1. **Clone the repository:**
 	```bash
-	git clone <repo-url>
-	cd TEST
+	git clone <repo-url> <repo-name>
+	cd <repo-name>
 	```
 2. **Install dependencies:**
 	```bash
@@ -44,11 +44,6 @@ ATC is a modern community management platform inspired by TXAdmin, built with Re
 - `public/` - Static assets
 - `supabase/migrations/` - Database schema and RLS policies
 
-## Deployment
-To deploy, use:
-```bash
-npm run deploy
-```
 Configure your production environment variables as needed.
 
 ## Credits
