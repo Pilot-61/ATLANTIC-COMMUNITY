@@ -14,6 +14,8 @@ interface CommentSectionProps {
 
 const CommentSection: React.FC<CommentSectionProps> = ({ announcementId, comments, onUpdate }) => {
   const { profile } = useAuth();
+  // For redirect
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [editingComment, setEditingComment] = useState<string | null>(null);
@@ -22,7 +24,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ announcementId, comment
 
   const handleAddComment = async (parentId?: string) => {
     if (!profile) {
-      toast.error('Please sign in to comment');
+      setRedirectToLogin(true);
       return;
     }
 
@@ -150,18 +152,20 @@ const CommentSection: React.FC<CommentSectionProps> = ({ announcementId, comment
                   </button>
                 )}
 
-                {profile?.id === comment.user?.id && (
+                {(profile?.id === comment.user?.id || profile?.is_admin) && (
                   <>
-                    <button
-                      onClick={() => {
-                        setEditingComment(comment.id);
-                        setEditContent(comment.content);
-                      }}
-                      className="text-gray-400 hover:text-yellow-400 text-xs flex items-center space-x-1 transition-colors"
-                    >
-                      <Edit className="w-3 h-3" />
-                      <span>Edit</span>
-                    </button>
+                    {profile?.id === comment.user?.id && (
+                      <button
+                        onClick={() => {
+                          setEditingComment(comment.id);
+                          setEditContent(comment.content);
+                        }}
+                        className="text-gray-400 hover:text-yellow-400 text-xs flex items-center space-x-1 transition-colors"
+                      >
+                        <Edit className="w-3 h-3" />
+                        <span>Edit</span>
+                      </button>
+                    )}
                     <button
                       onClick={() => handleDeleteComment(comment.id)}
                       className="text-gray-400 hover:text-red-400 text-xs flex items-center space-x-1 transition-colors"
@@ -207,6 +211,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ announcementId, comment
   // Filter top-level comments (no parent_id)
   const topLevelComments = comments.filter(comment => !comment.parent_id);
 
+  // Redirect to login page if needed
+  if (redirectToLogin) {
+    window.location.reload(); // fallback in case setCurrentPage is not available
+    // If you have setCurrentPage in props/context, use it instead:
+    // setCurrentPage('login');
+    // return null;
+  }
   return (
     <div className="p-6">
       {/* Add Comment Form */}

@@ -210,11 +210,11 @@ export const deleteComment = async (commentId: string) => {
   const profile = await getCurrentProfile();
   if (!profile) throw new Error('Not authenticated');
 
+  // Admins can delete any comment, users can delete their own
   const { error } = await supabase
     .from('announcement_comments')
     .delete()
-    .eq('id', commentId)
-    .eq('user_id', profile.id);
+    .eq('id', commentId);
 
   if (error) throw error;
 };

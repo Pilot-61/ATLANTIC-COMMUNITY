@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { id: 'features', label: 'Features' },
   { id: 'rules', label: 'Rules' },
   { id: 'community', label: 'Community' },
-  { id: 'announcements', label: 'Announcements' },
+  { id: 'blog', label: 'Blog' },
   { id: 'connect', label: 'Connect' },
 ];
 
@@ -87,7 +87,7 @@ const Navigation: React.FC<NavigationProps> = ({
           <div className="hidden md:flex items-center space-x-4">
             {!user || !profile ? (
               <button
-                onClick={() => setShowAuthModal(true)}
+                onClick={() => setCurrentPage('login')}
                 className="bg-gradient-to-r from-red-600 to-yellow-600 hover:from-red-700 hover:to-yellow-700 px-4 py-2 rounded-lg font-semibold transition-all duration-300 flex items-center space-x-2"
               >
                 <User className="w-4 h-4" />
@@ -193,7 +193,7 @@ const Navigation: React.FC<NavigationProps> = ({
               {!user || !profile ? (
                 <button
                   onClick={() => {
-                    setShowAuthModal(true);
+                    setCurrentPage('login');
                     setIsMenuOpen(false);
                   }}
                   className="block w-full text-left px-3 py-3 bg-gradient-to-r from-red-600 to-yellow-600 hover:from-red-700 hover:to-yellow-700 text-white font-medium rounded-lg transition-all duration-300 flex items-center space-x-2"

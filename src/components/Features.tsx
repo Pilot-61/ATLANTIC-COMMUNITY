@@ -1,7 +1,11 @@
 import React from 'react';
 import { Crown, Users, Shield, Zap, Globe, Play, Car, Heart, Gamepad2 } from 'lucide-react';
 
-const Features: React.FC = () => {
+interface FeaturesProps {
+  setCurrentPage: (page: string) => void;
+}
+
+const Features: React.FC<FeaturesProps> = ({ setCurrentPage }) => {
   const features = [
     {
       icon: <Crown className="w-8 h-8" />,
@@ -119,7 +123,7 @@ const Features: React.FC = () => {
               Join thousands of players who have already discovered the magic of Atlantic RP
             </p>
             <button 
-              onClick={() => document.getElementById('connect')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setCurrentPage('connect')}
               className="bg-gradient-to-r from-red-600 to-yellow-600 hover:from-red-700 hover:to-yellow-700 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/30"
             >
               Start Your Journey

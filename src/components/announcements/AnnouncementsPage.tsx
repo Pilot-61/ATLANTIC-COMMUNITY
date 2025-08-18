@@ -8,7 +8,7 @@ import CreateAnnouncementModal from './CreateAnnouncementModal';
 import AuthModal from '../auth/AuthModal';
 import toast from 'react-hot-toast';
 
-const AnnouncementsPage: React.FC = () => {
+const BlogPage: React.FC = () => {
   const { profile } = useAuth();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ const AnnouncementsPage: React.FC = () => {
       return;
     }
     if (!profile.is_admin) {
-      toast.error('Only admins can create announcements');
+      toast.error('Only admins can create blog posts');
       return;
     }
     setShowCreateModal(true);
@@ -54,8 +54,8 @@ const AnnouncementsPage: React.FC = () => {
   };
 
   const stats = {
-    totalAnnouncements: announcements.length,
-    pinnedAnnouncements: announcements.filter(a => a.is_pinned).length,
+    totalPosts: announcements.length,
+    pinnedPosts: announcements.filter(a => a.is_pinned).length,
     totalReactions: announcements.reduce((sum, a) => sum + (a._count?.reactions || 0), 0),
     totalComments: announcements.reduce((sum, a) => sum + (a._count?.comments || 0), 0),
   };
@@ -68,7 +68,7 @@ const AnnouncementsPage: React.FC = () => {
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center">
               <div className="animate-spin w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-              <p className="text-gray-300">Loading announcements...</p>
+              <p className="text-gray-300">Loading blog posts...</p>
             </div>
           </div>
         </div>
@@ -93,26 +93,26 @@ const AnnouncementsPage: React.FC = () => {
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-8">
             <span className="bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent">
-              Community Announcements
+              Blog
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
-            Stay updated with the latest news, events, and important information from the Atlantic RP team
+            Read the latest news, events, and stories from the Atlantic RP team and community.
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-yellow-500 mx-auto rounded-full"></div>
         </div>
 
-        {/* Stats */}
+        {/* Stats 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 text-center">
             <div className="text-3xl font-bold bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent mb-2">
-              {stats.totalAnnouncements}
+              {stats.totalPosts}
             </div>
             <div className="text-gray-400 text-sm">Total Posts</div>
           </div>
           <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 text-center">
             <div className="text-3xl font-bold bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent mb-2">
-              {stats.pinnedAnnouncements}
+              {stats.pinnedPosts}
             </div>
             <div className="text-gray-400 text-sm">Pinned</div>
           </div>
@@ -129,7 +129,7 @@ const AnnouncementsPage: React.FC = () => {
             <div className="text-gray-400 text-sm">Comments</div>
           </div>
         </div>
-
+          */}
         {/* Create Button */}
         {profile?.is_admin && (
           <div className="mb-8">
@@ -138,12 +138,12 @@ const AnnouncementsPage: React.FC = () => {
               className="bg-gradient-to-r from-red-600 to-yellow-600 hover:from-red-700 hover:to-yellow-700 px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 shadow-lg hover:shadow-red-500/30"
             >
               <Plus className="w-5 h-5" />
-              <span>Create Announcement</span>
+              <span>Create Blog Post</span>
             </button>
           </div>
         )}
 
-        {/* Announcements List */}
+        {/* Blog List */}
         <div className="space-y-8">
           {announcements.length > 0 ? (
             announcements.map((announcement) => (
@@ -158,18 +158,10 @@ const AnnouncementsPage: React.FC = () => {
             <div className="text-center py-16">
               <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-sm rounded-2xl p-12 border border-gray-700/50">
                 <Megaphone className="w-16 h-16 text-gray-400 mx-auto mb-6 opacity-50" />
-                <h3 className="text-2xl font-bold text-white mb-4">No Announcements Yet</h3>
+                <h3 className="text-2xl font-bold text-white mb-4">No Blog Posts Yet</h3>
                 <p className="text-gray-400 mb-8 max-w-md mx-auto">
-                  Be the first to know when the Atlantic RP team shares important updates and news.
+                  Be the first to know when the Atlantic RP team shares important updates and stories.
                 </p>
-                {!profile && (
-                  <button
-                    onClick={() => setShowAuthModal(true)}
-                    className="bg-gradient-to-r from-red-600 to-yellow-600 hover:from-red-700 hover:to-yellow-700 px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
-                  >
-                    Sign In to Stay Updated
-                  </button>
-                )}
               </div>
             </div>
           )}
@@ -192,4 +184,4 @@ const AnnouncementsPage: React.FC = () => {
   );
 };
 
-export default AnnouncementsPage;
+export default BlogPage;

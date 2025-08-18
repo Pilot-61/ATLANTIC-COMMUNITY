@@ -7,7 +7,9 @@ import Rules from './components/Rules';
 import Community from './components/Community';
 import Connect from './components/Connect';
 import Footer from './components/Footer';
-import AnnouncementsPage from './components/announcements/AnnouncementsPage';
+import BlogPage from './components/announcements/AnnouncementsPage';
+import LoginPage from './components/auth/LoginPage';
+import RegisterPage from './components/auth/RegisterPage';
 import { AuthProvider } from './contexts/AuthContext';
 
 const App: React.FC = () => {
@@ -43,12 +45,14 @@ const App: React.FC = () => {
 
   // Render the correct page
   let PageComponent = null;
-  if (currentPage === 'home') PageComponent = <Hero setCurrentPage={setCurrentPage} />;
-  if (currentPage === 'features') PageComponent = <Features />;
-  if (currentPage === 'rules') PageComponent = <Rules />;
-  if (currentPage === 'community') PageComponent = <Community />;
-  if (currentPage === 'connect') PageComponent = <Connect />;
-  if (currentPage === 'announcements') PageComponent = <AnnouncementsPage />;
+  if (currentPage === 'login') PageComponent = <LoginPage />;
+  else if (currentPage === 'register') PageComponent = <RegisterPage />;
+  else if (currentPage === 'home') PageComponent = <Hero setCurrentPage={setCurrentPage} />;
+  else if (currentPage === 'features') PageComponent = <Features setCurrentPage={setCurrentPage} />;
+  else if (currentPage === 'rules') PageComponent = <Rules />;
+  else if (currentPage === 'community') PageComponent = <Community />;
+  else if (currentPage === 'connect') PageComponent = <Connect />;
+  else if (currentPage === 'blog') PageComponent = <BlogPage />;
 
   return (
     <AuthProvider>

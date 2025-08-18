@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Pin, MoreHorizontal, Edit, Trash2, Eye } from 'lucide-react';
+import { Heart, MessageCircle, Pin, MoreHorizontal, Edit, Trash2, Eye, Share2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { type Announcement } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -14,6 +14,29 @@ interface AnnouncementCardProps {
 }
 
 const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, onUpdate, onEdit }) => {
+  // Share handler must be inside the component to access announcement prop
+  const handleShare = async () => {
+    const shareUrl = window.location.origin + '/#blog?id=' + announcement.id;
+    const shareData = {
+      title: announcement.title,
+      text: announcement.content,
+      url: shareUrl,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        toast.error('Share cancelled or failed');
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success('Link copied to clipboard!');
+      } catch {
+        toast.error('Could not copy link');
+      }
+    }
+  };
   const { profile } = useAuth();
   const [showComments, setShowComments] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -134,7 +157,7 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, onUpd
 
       {/* Content */}
       <div className="px-6 pb-4">
-        <h2 className="text-xl font-bold text-white mb-3">{announcement.title}</h2>
+  <h2 className="text-xl font-bold text-white mb-3">{announcement.title}</h2>
         <div className="text-gray-300 leading-relaxed whitespace-pre-wrap">
           {announcement.content}
         </div>
@@ -175,12 +198,19 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, onUpd
               <span className="text-sm font-medium">{announcement._count?.comments || 0}</span>
             </button>
 
-
+            <button
+              onClick={handleShare}
+              className="flex items-center space-x-2 text-gray-400 hover:text-green-500 transition-colors"
+              title="Share this post"
+            >
+              <Share2 className="w-5 h-5" />
+              <span className="text-sm font-medium">Share</span>
+            </button>
           </div>
 
           <div className="flex items-center space-x-2 text-gray-400 text-sm">
             <Eye className="w-4 h-4" />
-            <span>Public</span>
+            <span>Public Blog Post</span>
           </div>
         </div>
       </div>
