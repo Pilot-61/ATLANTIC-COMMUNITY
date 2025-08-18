@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import BlogPage from './components/announcements/AnnouncementsPage';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
+import UserManagementPage from './components/UserManagementPage';
 import { AuthProvider } from './contexts/AuthContext';
 
 const App: React.FC = () => {
@@ -55,6 +56,7 @@ const App: React.FC = () => {
   else if (currentPage === 'community') PageComponent = <Community />;
   else if (currentPage === 'connect') PageComponent = <Connect />;
   else if (currentPage === 'blog') PageComponent = <BlogPage />;
+  else if (currentPage === 'user-management') PageComponent = <UserManagementPage />;
 
   return (
     <AuthProvider>

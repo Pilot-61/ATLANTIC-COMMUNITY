@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase, type Profile } from '../lib/supabase';
 import { getCurrentProfile } from '../lib/auth';
+import BannedPage from '../components/BannedPage';
 
 interface AuthContextType {
   user: User | null;
@@ -68,6 +69,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshProfile,
   };
 
+  if (profile?.banned) {
+    return <BannedPage />;
+  }
   return (
     <AuthContext.Provider value={value}>
       {children}

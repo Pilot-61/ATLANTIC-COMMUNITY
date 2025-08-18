@@ -18,6 +18,7 @@ export interface Profile {
   avatar_url?: string;
   bio?: string;
   is_admin: boolean;
+  banned?: boolean;
   created_at: string;
   updated_at: string;
 }

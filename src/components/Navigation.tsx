@@ -139,6 +139,18 @@ const Navigation: React.FC<NavigationProps> = ({
                       <Settings className="w-4 h-4" />
                       <span>Edit Profile</span>
                     </button>
+                    {profile.is_admin && (
+                      <button
+                        onClick={() => {
+                          setCurrentPage('user-management');
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full px-4 py-2 text-left text-yellow-400 hover:text-yellow-300 hover:bg-gray-700 flex items-center space-x-2"
+                      >
+                        <User className="w-4 h-4" />
+                        <span>User Management</span>
+                      </button>
+                    )}
                     <button
                       onClick={handleSignOut}
                       className="w-full px-4 py-2 text-left text-red-400 hover:text-red-300 hover:bg-gray-700 flex items-center space-x-2"
@@ -214,6 +226,18 @@ const Navigation: React.FC<NavigationProps> = ({
                     <Settings className="w-5 h-5" />
                     <span>Edit Profile</span>
                   </button>
+                  {profile.is_admin && (
+                    <button
+                      onClick={() => {
+                        setCurrentPage('user-management');
+                        setIsMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-3 py-3 text-yellow-400 hover:text-yellow-300 hover:bg-black/60 rounded-lg transition-all duration-300 flex items-center space-x-2"
+                    >
+                      <User className="w-5 h-5" />
+                      <span>User Management</span>
+                    </button>
+                  )}
                   <button
                     onClick={() => {
                       handleSignOut();
