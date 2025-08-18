@@ -47,7 +47,6 @@ ATC is a modern community management platform inspired by TXAdmin, built with Re
 Configure your production environment variables as needed.
 
 ## Credits
-- Inspired by [TXAdmin](https://txadmin.fivem.net/)
 - Built with [React](https://react.dev/), [Supabase](https://supabase.com/), and [Tailwind CSS](https://tailwindcss.com/)
 
 ## License
