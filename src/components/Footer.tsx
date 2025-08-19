@@ -6,7 +6,7 @@ const quickLinks = [
   { name: 'Features', id: 'features' },
   { name: 'Rules', id: 'rules' },
   { name: 'Community', id: 'community' },
-  { name: 'Announcements', id: 'announcements' },
+  { name: 'Blog', id: 'blog' },
   { name: 'Connect', id: 'connect' }
 ];
 
